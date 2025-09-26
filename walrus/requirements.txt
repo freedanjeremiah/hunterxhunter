@@ -1,0 +1,31 @@
+# Walrus CLI Requirements
+# This application uses only Python standard library modules
+# No additional pip installations required
+
+# Python Standard Library modules used:
+# - argparse (command-line argument parsing)
+# - json (JSON data handling)
+# - hashlib (SHA-256 hashing)
+# - zipfile (directory compression/extraction)  
+# - tempfile (temporary file management)
+# - subprocess (walrus command execution)
+# - pathlib (path manipulation)
+# - datetime (timestamps)
+# - os (operating system interface)
+# - sys (system-specific parameters)
+
+# External Dependencies:
+# - Walrus CLI tool (must be installed separately and available in PATH)
+#   Installation instructions: https://docs.walrus.storage/
+#
+# Walrus CLI provides commands:
+# - walrus store <file>    (stores blob and returns blob ID)
+# - walrus blob <blob_id>  (retrieves blob by ID)
+
+# Python Version Requirement:
+# Python 3.7 or higher (for pathlib and other modern features)
+
+# Optional Development Dependencies:
+# pytest>=6.0.0  # For running tests (if added)
+# black>=21.0.0  # For code formatting (if needed)
+# mypy>=0.900    # For type checking (if needed)

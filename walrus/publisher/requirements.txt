@@ -1,0 +1,36 @@
+# Walrus Publisher Node Requirements
+
+# Python 3.7+ (standard library only)
+# No additional pip packages required
+
+# External Dependencies (must be installed separately):
+
+# 1. Walrus CLI - Core requirement
+#    - Install from: https://docs.walrus.storage/
+#    - Must be available in system PATH
+#    - Provides commands: walrus publisher, walrus aggregator, walrus daemon
+#    - Version: Latest stable release
+
+# 2. PyYAML - For configuration file handling
+#    Install with: pip install PyYAML
+
+# 3. System Requirements:
+#    - Python 3.7 or higher
+#    - Stable internet connection
+#    - Open network port (default: 8080)
+#    - SUI/WAL tokens for staking
+#    - Sufficient disk space for blob storage
+
+# Optional Dependencies:
+# - systemd (Linux) - For service management
+# - nginx - For reverse proxy/load balancing
+# - prometheus/grafana - For monitoring
+
+# Network Requirements:
+# - Inbound connections on publisher port (8080)
+# - Outbound connections to Walrus network
+# - DNS resolution working
+# - Firewall configured to allow traffic
+
+# Installation Commands:
+# pip install PyYAML

@@ -1,0 +1,42 @@
+[Unit]
+Description=Walrus Publisher Node Daemon
+Documentation=https://docs.walrus.storage/
+After=network.target network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=walrus
+Group=walrus
+WorkingDirectory=/opt/walrus/publisher
+ExecStart=/usr/local/bin/walrus daemon 0.0.0.0:8080
+ExecReload=/bin/kill -HUP $MAINPID
+Restart=always
+RestartSec=10
+TimeoutStartSec=60
+TimeoutStopSec=30
+
+# Output
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=walrus-publisher
+
+# Security settings
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/walrus
+ReadWritePaths=/home/walrus/.walrus
+ReadWritePaths=/var/log/walrus
+
+# Resource limits
+LimitNOFILE=65536
+LimitNPROC=4096
+
+# Environment
+Environment="RUST_LOG=info"
+Environment="WALRUS_CONFIG_PATH=/home/walrus/.walrus/client_config.yaml"
+
+[Install]
+WantedBy=multi-user.target

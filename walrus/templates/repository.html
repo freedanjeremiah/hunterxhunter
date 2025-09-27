@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Repository: {{ blob_id[:16] }}...{% endblock %}
+
+{% block content %}
+<div class="repository-header">
+    <div class="repo-breadcrumb">
+        <a href="/">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <i class="fas fa-chevron-right"></i>
+        <span class="repo-name">
+            <i class="fas fa-book"></i>
+            Repository
+        </span>
+        {% if current_path %}
+        <i class="fas fa-chevron-right"></i>
+        <span>{{ current_path }}</span>
+        {% endif %}
+    </div>
+    
+    <div class="repo-info">
+        <h1 class="repo-title">
+            <i class="fas fa-cube"></i>
+            {{ blob_id[:16] }}...
+        </h1>
+        <div class="repo-meta">
+            <span class="meta-item">
+                <i class="fas fa-fingerprint"></i>
+                Blob ID: <code>{{ blob_id }}</code>
+            </span>
+        </div>
+    </div>
+    
+    <div class="repo-actions">
+        <button class="btn btn-secondary" onclick="copyToClipboard('{{ blob_id }}')">
+            <i class="fas fa-copy"></i>
+            Copy Blob ID
+        </button>
+        <button class="btn btn-outline" onclick="downloadRepository('{{ blob_id }}')">
+            <i class="fas fa-download"></i>
+            Download
+        </button>
+    </div>
+</div>
+
+<div class="repository-content">
+    <div class="file-browser">
+        <div class="file-browser-header">
+            <i class="fas fa-folder"></i>
+            Files
+            {% if current_path %}
+            <div class="path-nav">
+                <a href="/repo/{{ blob_id }}">
+                    <i class="fas fa-home"></i>
+                </a>
+                {% set path_parts = current_path.split('/') %}
+                {% for part in path_parts %}
+                    {% set partial_path = path_parts[:loop.index]|join('/') %}
+                    <i class="fas fa-chevron-right"></i>
+                    <a href="/repo/{{ blob_id }}/{{ partial_path }}">{{ part }}</a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        
+        <div class="file-list">
+            {% if current_path %}
+            <div class="file-item directory">
+                <a href="/repo/{{ blob_id }}{% if '/' in current_path %}/{{ current_path.rsplit('/', 1)[0] }}{% endif %}">
+                    <i class="fas fa-level-up-alt"></i>
+                    <span class="file-name">..</span>
+                </a>
+            </div>
+            {% endif %}
+            
+            {% for file in files %}
+            <div class="file-item {% if file.is_dir %}directory{% else %}file{% endif %}">
+                {% if file.is_dir %}
+                <a href="/repo/{{ blob_id }}/{{ file.path }}">
+                    <i class="fas fa-folder"></i>
+                    <span class="file-name">{{ file.name }}</span>
+                </a>
+                {% else %}
+                <a href="/repo/{{ blob_id }}/file/{{ file.path }}">
+                    <i class="fas fa-file-code"></i>
+                    <span class="file-name">{{ file.name }}</span>
+                    <span class="file-size">{{ file.size }} bytes</span>
+                </a>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    
+    {% if readme %}
+    <div class="readme-section">
+        <div class="readme-header">
+            <i class="fas fa-book-open"></i>
+            README
+        </div>
+        <div class="readme-content">
+            {% if readme.type == 'markdown' %}
+                {{ readme.content|safe }}
+            {% else %}
+                <pre><code>{{ readme.raw_content }}</code></pre>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

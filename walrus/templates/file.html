@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}{{ file_content.filename }}{% endblock %}
+
+{% block content %}
+<div class="file-header">
+    <div class="file-breadcrumb">
+        <a href="/">
+            <i class="fas fa-home"></i>
+            Dashboard
+        </a>
+        <i class="fas fa-chevron-right"></i>
+        <a href="/repo/{{ blob_id }}">
+            <i class="fas fa-book"></i>
+            Repository
+        </a>
+        {% set path_parts = file_path.split('/')[:-1] %}
+        {% for part in path_parts %}
+            {% set partial_path = path_parts[:loop.index]|join('/') %}
+            <i class="fas fa-chevron-right"></i>
+            <a href="/repo/{{ blob_id }}/{{ partial_path }}">{{ part }}</a>
+        {% endfor %}
+        <i class="fas fa-chevron-right"></i>
+        <span class="file-name">
+            <i class="fas fa-file-code"></i>
+            {{ file_content.filename }}
+        </span>
+    </div>
+    
+    <div class="file-actions">
+        <button class="btn btn-secondary" onclick="copyFileContent()">
+            <i class="fas fa-copy"></i>
+            Copy
+        </button>
+        <button class="btn btn-outline" onclick="downloadFile('{{ file_content.filename }}')">
+            <i class="fas fa-download"></i>
+            Download
+        </button>
+    </div>
+</div>
+
+<div class="file-viewer">
+    <div class="file-viewer-header">
+        <div class="file-info">
+            <span class="file-icon">
+                {% if file_content.type == 'markdown' %}
+                    <i class="fab fa-markdown"></i>
+                {% elif file_content.language == 'python' %}
+                    <i class="fab fa-python"></i>
+                {% elif file_content.language == 'javascript' %}
+                    <i class="fab fa-js"></i>
+                {% elif file_content.language == 'html' %}
+                    <i class="fab fa-html5"></i>
+                {% elif file_content.language == 'css' %}
+                    <i class="fab fa-css3-alt"></i>
+                {% else %}
+                    <i class="fas fa-file-code"></i>
+                {% endif %}
+            </span>
+            <span class="file-name">{{ file_content.filename }}</span>
+            {% if file_content.language %}
+            <span class="file-language">{{ file_content.language }}</span>
+            {% endif %}
+        </div>
+        
+        <div class="view-toggle">
+            {% if file_content.type == 'markdown' %}
+            <button class="btn btn-small" id="toggle-raw" onclick="toggleMarkdownView()">
+                <i class="fas fa-code"></i>
+                Raw
+            </button>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="file-content">
+        {% if file_content.type == 'binary' %}
+        <div class="binary-file">
+            <div class="binary-icon">
+                <i class="fas fa-file-alt"></i>
+            </div>
+            <p>{{ file_content.content }}</p>
+        </div>
+        {% elif file_content.type == 'markdown' %}
+        <div id="markdown-rendered" class="markdown-content">
+            {{ file_content.content|safe }}
+        </div>
+        <div id="markdown-raw" class="code-content" style="display: none;">
+            <pre><code class="language-markdown">{{ file_content.raw_content }}</code></pre>
+        </div>
+        {% else %}
+        <div class="code-content">
+            {{ file_content.content|safe }}
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<script>
+let isRawView = false;
+
+function toggleMarkdownView() {
+    const rendered = document.getElementById('markdown-rendered');
+    const raw = document.getElementById('markdown-raw');
+    const button = document.getElementById('toggle-raw');
+    
+    if (isRawView) {
+        rendered.style.display = 'block';
+        raw.style.display = 'none';
+        button.innerHTML = '<i class="fas fa-code"></i> Raw';
+        isRawView = false;
+    } else {
+        rendered.style.display = 'none';
+        raw.style.display = 'block';
+        button.innerHTML = '<i class="fas fa-eye"></i> Preview';
+        isRawView = true;
+    }
+}
+
+function copyFileContent() {
+    const content = `{{ file_content.raw_content|replace('\n', '\\n')|replace('"', '\\"') }}`;
+    navigator.clipboard.writeText(content).then(() => {
+        showNotification('File content copied to clipboard!');
+    });
+}
+
+function downloadFile(filename) {
+    const content = `{{ file_content.raw_content|replace('\n', '\\n')|replace('"', '\\"') }}`;
+    const blob = new Blob([content], { type: 'text/plain' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+}
+</script>
+{% endblock %}

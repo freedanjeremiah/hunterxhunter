@@ -1,4 +1,4 @@
-[Unit]
+walrus-list[Unit]
 Description=Walrus Publisher Node Daemon
 Documentation=https://docs.walrus.storage/
 After=network.target network-online.target

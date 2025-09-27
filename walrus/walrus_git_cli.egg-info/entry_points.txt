@@ -1,0 +1,5 @@
+[console_scripts]
+walrus = walrus_cli:main
+walrus-list = walrus_cli:main_list
+walrus-pull = walrus_cli:main_pull
+walrus-push = walrus_cli:main_push

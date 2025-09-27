@@ -1,0 +1,32 @@
+# Include documentation files
+include README.md
+include LICENSE
+include CHANGELOG.md
+include pyproject.toml
+
+# Include configuration files
+recursive-include . *.yaml *.yml *.json *.toml
+
+# Include publisher tools
+recursive-include publisher *.py *.md *.txt *.service
+
+# Include example and test files
+recursive-include examples *.py *.md
+recursive-include tests *.py
+
+# Exclude development and build files
+exclude .gitignore
+exclude *.pyc
+exclude .DS_Store
+recursive-exclude . __pycache__
+recursive-exclude . *.py[co]
+recursive-exclude . .git*
+recursive-exclude . .pytest_cache
+recursive-exclude . .mypy_cache
+recursive-exclude . *.egg-info
+
+# Exclude temporary and cache files
+global-exclude .walrus/*
+global-exclude *.tmp
+global-exclude *.bak
+global-exclude *~

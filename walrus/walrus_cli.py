@@ -282,27 +282,109 @@ class WalrusCLI:
             print(f"    Last updated: {timestamp}")
 
 
+def main_push():
+    """Entry point for 'walrus-push' standalone command"""
+    import sys
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="Push directory to Walrus storage",
+        prog="walrus-push"
+    )
+    parser.add_argument('directory', nargs='?', default='.', 
+                       help='Directory to push (default: current directory)')
+    parser.add_argument('--epochs', type=int, default=5,
+                       help='Number of epochs to store the blob (default: 5)')
+    
+    args = parser.parse_args()
+    
+    try:
+        cli = WalrusCLI()
+        success = cli.push(args.directory)
+        sys.exit(0 if success else 1)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+def main_pull():
+    """Entry point for 'walrus-pull' standalone command"""
+    import sys
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="Pull directory from Walrus storage",
+        prog="walrus-pull"
+    )
+    parser.add_argument('directory', nargs='?', default='.', 
+                       help='Directory to pull to (default: current directory)')
+    
+    args = parser.parse_args()
+    
+    try:
+        cli = WalrusCLI()
+        success = cli.pull(args.directory)
+        sys.exit(0 if success else 1)
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+def main_list():
+    """Entry point for 'walrus-list' standalone command"""
+    import sys
+    import argparse
+    
+    parser = argparse.ArgumentParser(
+        description="List tracked Walrus repositories",
+        prog="walrus-list"
+    )
+    
+    parser.parse_args()  # This handles --help properly
+    
+    try:
+        cli = WalrusCLI()
+        cli.list_repositories()
+    except Exception as e:
+        print(f"Error: {e}")
+        sys.exit(1)
+
+
 def main():
-    """Main entry point"""
+    """Main entry point for walrus CLI"""
     parser = argparse.ArgumentParser(
         description="Walrus CLI - Git-like interface for Walrus storage",
-        prog="python walrus_cli.py"
+        prog="walrus",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+        epilog="""Examples:
+  walrus push .           Push current directory to Walrus
+  walrus push /my/dir     Push specific directory
+  walrus pull .           Pull to current directory
+  walrus pull /restore    Pull to specific directory
+  walrus list             List all tracked repositories
+
+For more information, visit: https://docs.walrus.storage/"""
     )
     
     subparsers = parser.add_subparsers(dest='command', help='Available commands')
     
     # Push command
-    push_parser = subparsers.add_parser('push', help='Push directory to Walrus')
+    push_parser = subparsers.add_parser('push', help='Push directory to Walrus storage')
     push_parser.add_argument('directory', nargs='?', default='.', 
                            help='Directory to push (default: current directory)')
+    push_parser.add_argument('--epochs', type=int, default=5,
+                           help='Number of epochs to store the blob (default: 5)')
     
     # Pull command
-    pull_parser = subparsers.add_parser('pull', help='Pull directory from Walrus')
+    pull_parser = subparsers.add_parser('pull', help='Pull directory from Walrus storage')
     pull_parser.add_argument('directory', nargs='?', default='.', 
-                           help='Directory to pull (default: current directory)')
+                           help='Directory to pull to (default: current directory)')
     
     # List command
     list_parser = subparsers.add_parser('list', help='List tracked repositories')
+    list_parser.add_argument('--verbose', '-v', action='store_true',
+                           help='Show detailed information')
+    
+    # Version command
+    parser.add_argument('--version', action='version', version='%(prog)s 1.0.0')
     
     args = parser.parse_args()
     
@@ -310,16 +392,23 @@ def main():
         parser.print_help()
         return
     
-    cli = WalrusCLI()
-    
-    if args.command == 'push':
-        success = cli.push(args.directory)
-        sys.exit(0 if success else 1)
-    elif args.command == 'pull':
-        success = cli.pull(args.directory)
-        sys.exit(0 if success else 1)
-    elif args.command == 'list':
-        cli.list_repositories()
+    try:
+        cli = WalrusCLI()
+        
+        if args.command == 'push':
+            success = cli.push(args.directory)
+            sys.exit(0 if success else 1)
+        elif args.command == 'pull':
+            success = cli.pull(args.directory)
+            sys.exit(0 if success else 1)
+        elif args.command == 'list':
+            cli.list_repositories()
+    except KeyboardInterrupt:
+        print("\n⏹️  Operation cancelled by user")
+        sys.exit(1)
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        sys.exit(1)
 
 
 if __name__ == "__main__":

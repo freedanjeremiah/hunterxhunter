@@ -1,3 +1,47 @@
+Metadata-Version: 2.4
+Name: walrus-git-cli
+Version: 1.0.0
+Summary: Git-like CLI for Walrus decentralized storage with push/pull functionality
+Home-page: https://github.com/walrus-storage/walrus-git-cli
+Author: Walrus Developer
+Author-email: Walrus Developer <developer@walrus.storage>
+Maintainer-email: Walrus Developer <developer@walrus.storage>
+License: MIT
+Project-URL: Homepage, https://github.com/walrus-storage/walrus-git-cli
+Project-URL: Documentation, https://docs.walrus.storage/
+Project-URL: Repository, https://github.com/walrus-storage/walrus-git-cli.git
+Project-URL: Bug Tracker, https://github.com/walrus-storage/walrus-git-cli/issues
+Project-URL: Changelog, https://github.com/walrus-storage/walrus-git-cli/blob/main/CHANGELOG.md
+Keywords: walrus,storage,git,cli,decentralized,blockchain
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Intended Audience :: Developers
+Classifier: Topic :: System :: Archiving
+Classifier: Topic :: Software Development :: Version Control
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.8
+Classifier: Programming Language :: Python :: 3.9
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Environment :: Console
+Requires-Python: >=3.8
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: PyYAML>=6.0
+Provides-Extra: dev
+Requires-Dist: pytest>=6.0; extra == "dev"
+Requires-Dist: black>=21.0.0; extra == "dev"
+Requires-Dist: flake8>=3.8.0; extra == "dev"
+Requires-Dist: mypy>=0.900; extra == "dev"
+Provides-Extra: publisher
+Requires-Dist: PyYAML>=6.0; extra == "publisher"
+Dynamic: author
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: requires-python
+
 # 🐋 Walrus Git CLI
 
 [![PyPI version](https://badge.fury.io/py/walrus-git-cli.svg)](https://badge.fury.io/py/walrus-git-cli)

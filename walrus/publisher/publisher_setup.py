@@ -168,19 +168,25 @@ class WalrusPublisher:
         if network_address:
             config['network_address'] = network_address
         
-        address = config.get('network_address', '0.0.0.0:8080')
+        address = config.get('network_address', '127.0.0.1:31415')
+        
+        # Create sub-wallets directory
+        sub_wallets_dir = Path("sub-wallets")
+        sub_wallets_dir.mkdir(exist_ok=True)
         
         print(f"🚀 Starting Walrus Daemon (Publisher + Aggregator) on {address}")
         print("🔄 This combines both publisher and aggregator functionality")
         print("📡 Your node will handle both upload and storage coordination")
+        print(f"💼 Sub-wallets directory: {sub_wallets_dir.absolute()}")
         print("⏹️  Press Ctrl+C to stop the daemon")
         print("-" * 50)
         
         try:
-            subprocess.run(
-                ['walrus', 'daemon', address],
-                check=True
-            )
+            subprocess.run([
+                'walrus', 'daemon', 
+                '--bind-address', address,
+                '--sub-wallets-dir', str(sub_wallets_dir.absolute())
+            ], check=True)
         except subprocess.CalledProcessError as e:
             print(f"❌ Daemon failed to start: {e}")
             return False

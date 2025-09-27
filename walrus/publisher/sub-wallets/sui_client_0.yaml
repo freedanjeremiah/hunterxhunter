@@ -1,0 +1,11 @@
+---
+keystore:
+  File: /mnt/c/Users/Lenovo/Desktop/hunterxhunter/walrus/publisher/sub-wallets/sui_0.keystore
+external_keys: ~
+envs:
+  - alias: testnet
+    rpc: "https://fullnode.testnet.sui.io:443"
+    ws: ~
+    basic_auth: ~
+active_env: testnet
+active_address: "0xe60f7c5b60624bf43498f53e3f13d8d3af162cd597722c705f1d2496f551335b"

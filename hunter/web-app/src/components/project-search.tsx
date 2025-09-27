@@ -6,6 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Search, ExternalLink, Loader2 } from "lucide-react";
+import ProjectDetailsModal from "./project-details-modal";
 
 interface Project {
   title: string;
@@ -71,6 +72,8 @@ export default function ProjectSearch() {
   const [error, setError] = useState<string | null>(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMorePages, setHasMorePages] = useState(true);
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   
   const abortControllerRef = useRef<AbortController | null>(null);
   const debouncedSearchTerm = useDebounce(searchTerm, 300);
@@ -189,9 +192,19 @@ export default function ProjectSearch() {
         setIsLoadingMore(false);
       }, 300); // Small delay to show loading state
     }
-  }, [isLoadingMore, hasMorePages]);
+    }, [isLoadingMore, hasMorePages]);
 
-  if (isLoading) {
+  // Handle project card click
+  const handleProjectClick = useCallback((project: Project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  }, []);
+
+  // Handle modal close
+  const handleModalClose = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  }, []);  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
@@ -287,7 +300,11 @@ export default function ProjectSearch() {
         <>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedProjects.map((project, index) => (
-              <Card key={index} className="h-full hover:shadow-lg transition-shadow duration-200">
+              <Card 
+                key={index} 
+                className="h-full hover:shadow-lg transition-all duration-200 cursor-pointer hover:scale-[1.02]"
+                onClick={() => handleProjectClick(project)}
+              >
                 <CardHeader>
                   <div className="flex justify-between items-start gap-2">
                     <CardTitle className="text-lg font-semibold line-clamp-2">
@@ -327,21 +344,45 @@ export default function ProjectSearch() {
                     </div>
                   )}
                   
-                  <Button asChild className="w-full" variant="outline">
-                    <a
-                      href={project.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center gap-2"
+                  <div className="flex gap-2">
+                    <Button 
+                      asChild 
+                      className="flex-1" 
+                      variant="outline"
+                      onClick={(e) => e.stopPropagation()}
                     >
-                      <ExternalLink className="h-4 w-4" />
-                      View Project
-                    </a>
-                  </Button>
+                      <a
+                        href={project.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center justify-center gap-2"
+                      >
+                        <ExternalLink className="h-4 w-4" />
+                        View Project
+                      </a>
+                    </Button>
+                    <Button 
+                      size="sm" 
+                      variant="secondary"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleProjectClick(project);
+                      }}
+                    >
+                      Details
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
             ))}
           </div>
+
+          {/* Project Details Modal */}
+          <ProjectDetailsModal 
+            project={selectedProject}
+            isOpen={isModalOpen}
+            onClose={handleModalClose}
+          />
 
           {/* Load More Button */}
           {hasMorePages && (

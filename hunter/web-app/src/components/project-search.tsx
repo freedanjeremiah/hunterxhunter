@@ -207,27 +207,7 @@ export default function ProjectSearch() {
   }, []);  if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* Top Corner Buttons */}
-        <div className="fixed top-4 left-0 right-0 z-50 px-4">
-          <div className="flex justify-between items-center max-w-7xl mx-auto">
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              Menu
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              Git Walrus
-            </Button>
-          </div>
-        </div>
-
-        <div className="text-center mb-8 mt-16">
+        <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             Project Explorer
           </h1>
@@ -260,27 +240,7 @@ export default function ProjectSearch() {
   if (error) {
     return (
       <div className="container mx-auto px-4 py-8">
-        {/* Top Corner Buttons */}
-        <div className="fixed top-4 left-0 right-0 z-50 px-4">
-          <div className="flex justify-between items-center max-w-7xl mx-auto">
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              Menu
-            </Button>
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-            >
-              Git Walrus
-            </Button>
-          </div>
-        </div>
-
-        <div className="text-center text-red-600 mt-16">
+        <div className="text-center text-red-600">
           <p>Error: {error}</p>
           <Button 
             onClick={() => window.location.reload()} 
@@ -296,28 +256,8 @@ export default function ProjectSearch() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* Top Corner Buttons */}
-      <div className="fixed top-4 left-0 right-0 z-50 px-4">
-        <div className="flex justify-between items-center max-w-7xl mx-auto">
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-          >
-            Menu
-          </Button>
-          <Button 
-            variant="outline" 
-            size="sm"
-            className="bg-white/90 backdrop-blur-sm shadow-lg hover:shadow-xl transition-all duration-200"
-          >
-            Git Walrus
-          </Button>
-        </div>
-      </div>
-
       {/* Header and Search */}
-      <div className="text-center mb-8 mt-16">
+      <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
           Project Explorer
         </h1>

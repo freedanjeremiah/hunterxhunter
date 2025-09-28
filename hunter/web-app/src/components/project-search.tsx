@@ -209,10 +209,10 @@ export default function ProjectSearch() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-            Project Explorer
+            HunterxHunter
           </h1>
           <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-            Discover amazing projects from hackathons and events
+            An Analytics platform to better understand a classify a project
           </p>
           
           <div className="relative max-w-md mx-auto">
@@ -259,10 +259,10 @@ export default function ProjectSearch() {
       {/* Header and Search */}
       <div className="text-center mb-8">
         <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
-          Project Explorer
+          HunterxHunter
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300 mb-8">
-          Discover amazing projects from hackathons and events
+          An Analytics platform to better understand and classify a project
         </p>
         
         {/* Search Bar */}

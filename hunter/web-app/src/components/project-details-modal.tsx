@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ExternalLink, Shield, CheckCircle, AlertTriangle, FileText, Award, Calendar, Globe } from "lucide-react";
+import ASTVerification from "@/components/ast-verification";
 
 interface Project {
   title: string;
@@ -249,6 +250,11 @@ export default function ProjectDetailsModal({ project, isOpen, onClose }: Projec
             <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               {project.description}
             </p>
+          </div>
+
+          {/* AST & GumTree Verification */}
+          <div>
+            <ASTVerification project={project} />
           </div>
 
           {/* Evidence Package */}
